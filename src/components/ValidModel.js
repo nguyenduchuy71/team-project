@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 const customStyles = {
   content: {
-    width: "30vw",
-    height: "30vh",
+    width: "max-content",
+    height: "max-content",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -26,7 +26,7 @@ function ValidModel({ openValidModel, setOpenValidModel, project }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input === project?.projectPassword) {
-      history.push(`/project/${project?.id}`);
+      history.push(`/project/${project.project_ID}`);
     } else {
       setCheck(false);
     }
@@ -56,11 +56,12 @@ function ValidModel({ openValidModel, setOpenValidModel, project }) {
   );
 }
 const FormContent = styled.div`
-  height: 100%;
-  margin: 0 auto;
-  background-color: #ccc;
-  position: relative;
+  background-color: transparent;
   border-radius: 10px;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  position: relative;
   ion-icon {
     position: absolute;
     top: 2px;
@@ -70,6 +71,8 @@ const FormContent = styled.div`
     cursor: pointer;
   }
   form {
+    border-radius: 4px;
+    background-color: #ccc;
     padding: 20px;
     display: flex;
     flex-direction: column;

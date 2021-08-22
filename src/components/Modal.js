@@ -1,15 +1,26 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { addProject } from "../redux/projectSlice";
 const initialState = {
   projectName: "",
   projectPassword: "",
 };
-function Modal({ user, db, setOpenModel }) {
+function Modal({ user, setOpenModel }) {
   const [formProject, setFormProject] = useState(initialState);
+  const dispatch = useDispatch();
   const handleSubmitForm = (e) => {
     e.preventDefault();
     if (user) {
-      db.collection("projects")
+      const data = {
+        createdAt: new Date().toISOString(),
+        projectName: formProject.projectName,
+        projectPassword: formProject.projectPassword,
+        projectCreatorName: user?.email,
+        projectCreatorAvatar: user?.photoURL,
+      };
+      dispatch(addProject(data));
+      /*       db.collection("projects")
         .add({
           createdAt: new Date().toISOString(),
           projectName: formProject.projectName,
@@ -24,7 +35,7 @@ function Modal({ user, db, setOpenModel }) {
         .catch(function (error) {
           alert("Có lỗi xảy ra vui lòng thử lại ");
           console.log(error);
-        });
+        }); */
       setOpenModel(false);
     } else {
       alert("Vui lòng đăng nhập trước khi tạo");
@@ -65,7 +76,7 @@ const FormContent = styled.form`
   flex-direction: column;
   align-items: center;
   input {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     width: 240px;
     padding: 8px 10px;
     outline: none;

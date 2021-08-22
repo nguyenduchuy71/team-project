@@ -3,20 +3,31 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
 import { auth, db } from "../firebase";
 import firebase from "firebase";
+import { addMessage } from "../redux/chatSlice";
+import { useDispatch } from "react-redux";
 function ChatInput({ id, chatRef }) {
   const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
   const sendMessage = (e) => {
     e.preventDefault();
     if (!id) {
       return false;
     }
-    db.collection("rooms").doc(id).collection("messages").add({
+    /*     db.collection("rooms").doc(id).collection("messages").add({
       message: input,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       userEmail: user?.email,
       userImage: user.photoURL,
-    });
+    }); */
+    const data = {
+      message: input,
+      userEmail: user?.email,
+      userImage: user?.photoURL,
+      project_ID: id,
+      createdAt: new Date().toISOString(),
+    };
+    dispatch(addMessage(data));
     chatRef?.current.scrollIntoView({
       behavior: "smooth",
     });

@@ -5,7 +5,9 @@ function Project({ project, user }) {
   const [openValidModel, setOpenValidModel] = useState(false);
   const handleClick = () => {
     if (user) setOpenValidModel(true);
-    else alert("Vui lòng đăng nhập");
+    else {
+      alert("Vui lòng đăng nhập!");
+    }
   };
   return (
     <div>
@@ -20,7 +22,7 @@ function Project({ project, user }) {
           <img src={project.projectCreatorAvatar} alt="avatar" />
           <ElementDay>
             <ion-icon name="calendar-outline"></ion-icon>
-            <span>{project.createdAt.split("T")[0]}</span>
+            <span>{project.createdAt?.split("T")[0]}</span>
           </ElementDay>
         </ElementCotent>
       </HommeScreenMainElement>

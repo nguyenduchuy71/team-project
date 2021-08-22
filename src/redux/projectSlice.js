@@ -1,21 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { useState } from "react";
-import { db } from "../firebase";
+import axios from "axios";
 
 const KEY = "projects";
 
 export const fetchProjects = createAsyncThunk(
   `${KEY}/fetchProjects`,
   async () => {
-    const [project, setProject] = useState([]);
-    db.collection("projects").onSnapshot((snapshot) => {
-      const items = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProject(items);
-    });
-    return project;
+    const project = await axios.get("/projects");
+    return project.data;
+  }
+);
+export const fetchProjectById = createAsyncThunk(
+  `${KEY}/fetchProjectById`,
+  async (id) => {
+    const project = await axios.get(`/projects/${id}`);
+    return project.data;
+  }
+);
+export const addProject = createAsyncThunk(
+  `${KEY}/addProject`,
+  async (data) => {
+    const rs = await axios.post("/projects", data);
+    if (rs.status === 200) {
+      return data;
+    } else return NaN;
   }
 );
 
@@ -23,16 +31,46 @@ const projectsSlice = createSlice({
   name: KEY,
   initialState: {
     isLoading: false,
-    project: [],
+    projects: [],
+    project: {},
   },
-  reducers: {},
-  extraReducers: {
-    [fetchProjects.pending]: (state, action) => {},
-    [fetchProjects.fulfilled]: (state, action) => {
-      console.log(action.payload);
-      state.project = action.payload;
+  reducers: {
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
-    [fetchProjects.rejected]: (state, action) => {},
+  },
+  extraReducers: {
+    [fetchProjects.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [fetchProjects.fulfilled]: (state, action) => {
+      state.projects = action.payload;
+      state.isLoading = false;
+    },
+    [fetchProjects.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
+    [fetchProjectById.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [fetchProjectById.fulfilled]: (state, action) => {
+      state.project = action.payload;
+      state.isLoading = false;
+    },
+    [fetchProjectById.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
+    [addProject.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [addProject.fulfilled]: (state, action) => {
+      const data = action.payload;
+      if (data) state.projects = [...state.projects, data];
+      state.isLoading = false;
+    },
+    [addProject.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
   },
 });
 const { reducer, actions } = projectsSlice;

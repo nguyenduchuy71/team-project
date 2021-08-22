@@ -1,47 +1,34 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { db, auth } from "../firebase";
+import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router-dom";
 import ChatInput from "../components/ChatInput";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjectById } from "../redux/projectSlice";
 import Message from "../components/Message";
 import Member from "../components/Member";
 import DragList from "../components/DragList";
-import { useDispatch } from "react-redux";
+import { fetchMessages } from "../redux/chatSlice";
 function ProjectDetailsScreen(props) {
+  const id = props.match.params.id;
   const chatRef = useRef(null);
   const dispatch = useDispatch();
-  const id = props.match.params.id;
   const [user] = useAuthState(auth);
-  const [project, setProject] = useState();
   const history = useHistory();
-  const [roomMessages, loading] = useCollection(
-    id &&
-      db
-        .collection("rooms")
-        .doc(id)
-        .collection("messages")
-        .orderBy("timestamp", "asc")
-  );
-  const fetchData = () => {
-    db.collection("projects")
-      .doc(id)
-      .get()
-      .then((snapshot) => {
-        setProject(snapshot.data());
-      });
-  };
+  const { isLoading, project } = useSelector((state) => state.projects);
+  const { messages } = useSelector((state) => state.chat);
   useEffect(() => {
     if (user) {
-      fetchData();
+      dispatch(fetchProjectById(id));
+      dispatch(fetchMessages(id));
     } else {
       history.push("/");
     }
     chatRef?.current.scrollIntoView({
       behavior: "smooth",
     });
-  }, [user, loading]);
+  }, [dispatch]);
   return (
     <ProjectDetailsContainer>
       <ProjectDetailsTaskBoardContent>
@@ -49,7 +36,7 @@ function ProjectDetailsScreen(props) {
           <p>{project?.projectName}</p>
           <TaskBoarTime>
             <ion-icon name="calendar-outline"></ion-icon>
-            <span>{project?.createdAt.split("T")[0]}</span>
+            <span>{project.createdAt?.split("T")[0]}</span>
           </TaskBoarTime>
         </TaskBoardHead>
         <TaskBoardMain>
@@ -58,7 +45,7 @@ function ProjectDetailsScreen(props) {
       </ProjectDetailsTaskBoardContent>
       <ProjectDetailsGroupChatContent>
         <MemberGroup>
-          <p>Số lượng thành viên (10)</p>
+          <p>Thành viên</p>
           <ListMember>
             <Member />
           </ListMember>
@@ -67,15 +54,14 @@ function ProjectDetailsScreen(props) {
           <p>Group Chat</p>
           <GroupChatContent id="chat">
             <ListChat>
-              {roomMessages?.docs.map((doc) => {
-                const { message, timestamp, userEmail, userImage } = doc.data();
+              {messages?.map((message) => {
                 return (
                   <Message
-                    key={doc.id}
-                    message={message}
-                    timestamp={timestamp}
-                    userEmail={userEmail}
-                    userImage={userImage}
+                    key={message?.message_ID}
+                    message={message?.message}
+                    timestamp={message?.createdAt}
+                    userEmail={message?.userEmail}
+                    userImage={message?.userImage}
                   />
                 );
               })}

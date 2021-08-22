@@ -41,7 +41,7 @@ function Header() {
   );
 }
 const HeaderContainer = styled.div`
-  padding: 10px 0;
+  padding: 10px;
   background-color: #ccc;
   display: flex;
   align-items: center;
@@ -62,6 +62,9 @@ const SearchContent = styled.div`
     width: 400px;
     outline: none;
     border: none;
+    @media screen and (max-width: 767px) {
+      width: 200px;
+    }
   }
   ion-icon {
     background-color: #3480eb;
