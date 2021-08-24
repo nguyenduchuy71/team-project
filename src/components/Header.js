@@ -41,7 +41,7 @@ function Header() {
   );
 }
 const HeaderContainer = styled.div`
-  padding: 10px;
+  padding: 10px 0;
   background-color: #ccc;
   display: flex;
   align-items: center;

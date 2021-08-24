@@ -6,6 +6,7 @@ import Project from "../components/Project";
 import Modal from "../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjects } from "../redux/projectSlice";
+import Loading from "../components/Loading";
 function HomeScreen() {
   const dispatch = useDispatch();
   const [openModel, setOpenModel] = useState(false);
@@ -36,11 +37,15 @@ function HomeScreen() {
         </HommeScreenHeadButton>
       </HomeScreenHead>
       {openModel && <Modal user={user} setOpenModel={setOpenModel} />}
-      <HommeScreenMain>
-        {projects?.map((project) => (
-          <Project key={project?.id} project={project} user={user} />
-        ))}
-      </HommeScreenMain>
+      {!isLoading ? (
+        <HommeScreenMain>
+          {projects?.map((project) => (
+            <Project key={project?.project_ID} project={project} user={user} />
+          ))}
+        </HommeScreenMain>
+      ) : (
+        <Loading />
+      )}
     </HomeScreenContainer>
   );
 }
@@ -67,6 +72,7 @@ const HommeScreenHeadButton = styled.button`
   border: none;
   color: #fff;
   border-radius: 4px;
+  cursor: pointer;
   span {
     margin-left: 2px;
   }

@@ -26,6 +26,15 @@ export const addProject = createAsyncThunk(
     } else return NaN;
   }
 );
+export const deleteProject = createAsyncThunk(
+  `${KEY}/deleteProject`,
+  async (id) => {
+    const rs = await axios.delete(`/projects/${id}`);
+    if (rs.status === 200) {
+      return id;
+    } else return NaN;
+  }
+);
 
 const projectsSlice = createSlice({
   name: KEY,
@@ -69,6 +78,22 @@ const projectsSlice = createSlice({
       state.isLoading = false;
     },
     [addProject.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
+    [deleteProject.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [deleteProject.fulfilled]: (state, action) => {
+      const id = action.payload;
+      if (id) {
+        const newProject = state.projects;
+        state.projects = newProject.filter(
+          (project) => project.project_ID !== id
+        );
+      }
+      state.isLoading = false;
+    },
+    [deleteProject.rejected]: (state, action) => {
       state.isLoading = false;
     },
   },

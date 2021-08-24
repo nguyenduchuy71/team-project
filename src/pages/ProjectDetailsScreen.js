@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -10,17 +10,21 @@ import Message from "../components/Message";
 import Member from "../components/Member";
 import DragList from "../components/DragList";
 import { fetchMessages } from "../redux/chatSlice";
+import { fetchTasksByProjectId } from "../redux/taskSlice";
+import Loading from "../components/Loading";
 function ProjectDetailsScreen(props) {
   const id = props.match.params.id;
   const chatRef = useRef(null);
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
   const history = useHistory();
-  const { isLoading, project } = useSelector((state) => state.projects);
+  const { project } = useSelector((state) => state.projects);
   const { messages } = useSelector((state) => state.chat);
+  const { isLoading, tasks } = useSelector((state) => state.tasks);
   useEffect(() => {
     if (user) {
       dispatch(fetchProjectById(id));
+      dispatch(fetchTasksByProjectId(id));
       dispatch(fetchMessages(id));
     } else {
       history.push("/");
@@ -40,7 +44,7 @@ function ProjectDetailsScreen(props) {
           </TaskBoarTime>
         </TaskBoardHead>
         <TaskBoardMain>
-          <DragList id={id} />
+          {!isLoading ? <DragList id={id} tasks={tasks} /> : <Loading />}
         </TaskBoardMain>
       </ProjectDetailsTaskBoardContent>
       <ProjectDetailsGroupChatContent>
@@ -54,17 +58,15 @@ function ProjectDetailsScreen(props) {
           <p>Group Chat</p>
           <GroupChatContent id="chat">
             <ListChat>
-              {messages?.map((message) => {
-                return (
-                  <Message
-                    key={message?.message_ID}
-                    message={message?.message}
-                    timestamp={message?.createdAt}
-                    userEmail={message?.userEmail}
-                    userImage={message?.userImage}
-                  />
-                );
-              })}
+              {messages?.map((message) => (
+                <Message
+                  key={message?.message_ID}
+                  message={message?.message}
+                  timestamp={message?.createdAt}
+                  userEmail={message?.userEmail}
+                  userImage={message?.userImage}
+                />
+              ))}
               <ChatBottom ref={chatRef} />
             </ListChat>
           </GroupChatContent>

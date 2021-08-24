@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import DraggableElement from "./DraggableElement";
-import { db } from "../firebase";
-
+import { updateTaskId } from "../redux/taskSlice";
+import { useDispatch } from "react-redux";
 const DragDropContextContainer = styled.div`
   padding-right: 4px;
   border-radius: 6px;
@@ -29,56 +29,33 @@ const addToList = (list, index, element) => {
 
 const lists = ["todo", "inProgress", "done"];
 
-function DragList({ id }) {
+function DragList({ id, tasks }) {
   const [elements, setElements] = useState();
-  const [loading, setloading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const fetchTasks = async () => {
     const listTodo = [];
     const listInProgress = [];
     const listDone = [];
-    await db
-      .collection("tasks")
-      .doc(id)
-      .collection("todo")
-      .orderBy("timestamp", "asc")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          listTodo.push({ id: doc.id, ...doc.data() });
-        });
-      });
-    await db
-      .collection("tasks")
-      .doc(id)
-      .collection("inProgress")
-      .orderBy("timestamp", "asc")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          listInProgress.push({ id: doc.id, ...doc.data() });
-        });
-      });
-    await db
-      .collection("tasks")
-      .doc(id)
-      .collection("done")
-      .orderBy("timestamp", "asc")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          listDone.push({ id: doc.id, ...doc.data() });
-        });
-      });
+    tasks?.forEach((task) => {
+      if (task.typeTask === "todo") {
+        listTodo.push(task);
+      } else if (task.typeTask === "done") {
+        listDone.push(task);
+      } else {
+        listInProgress.push(task);
+      }
+    });
     setElements({
       todo: listTodo,
       inProgress: listInProgress,
       done: listDone,
     });
-    setloading(false);
+    setLoading(false);
   };
   useEffect(() => {
     fetchTasks();
-  }, [loading]);
+  }, [dispatch]);
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
@@ -97,14 +74,22 @@ function DragList({ id }) {
       removedElement
     );
     setElements(listCopy);
+    let newTasks = tasks;
+    let task = {};
+    newTasks.forEach((t) => {
+      if (t.task_ID === parseInt(result.draggableId)) {
+        task = { ...t, typeTask: result.destination.droppableId };
+      }
+    });
+    dispatch(updateTaskId(task));
   };
 
   return (
     <DragDropContextContainer>
-      {!loading ? (
+      {!loading && (
         <DragDropContext onDragEnd={onDragEnd}>
           <ListGrid>
-            {lists.map((listKey) => (
+            {lists?.map((listKey) => (
               <DraggableElement
                 elements={elements[`${listKey}`]}
                 key={listKey}
@@ -114,11 +99,9 @@ function DragList({ id }) {
             ))}
           </ListGrid>
         </DragDropContext>
-      ) : (
-        <></>
       )}
     </DragDropContextContainer>
   );
 }
 
-export default DragList;
+export default React.memo(DragList);

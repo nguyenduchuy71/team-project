@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
-import { auth, db } from "../firebase";
-import firebase from "firebase";
+import { auth } from "../firebase";
 import { addMessage } from "../redux/chatSlice";
 import { useDispatch } from "react-redux";
 function ChatInput({ id, chatRef }) {
@@ -14,12 +13,6 @@ function ChatInput({ id, chatRef }) {
     if (!id) {
       return false;
     }
-    /*     db.collection("rooms").doc(id).collection("messages").add({
-      message: input,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      userEmail: user?.email,
-      userImage: user.photoURL,
-    }); */
     const data = {
       message: input,
       userEmail: user?.email,

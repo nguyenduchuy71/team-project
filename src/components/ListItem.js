@@ -1,7 +1,8 @@
 import { Draggable } from "react-beautiful-dnd";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
+import { deleteTask } from "../redux/taskSlice";
+import { useDispatch } from "react-redux";
 const Avatar = styled.img`
   height: 30px;
   width: 30px;
@@ -17,11 +18,41 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  span {
+  F span {
     font-weight: bold;
   }
 `;
-
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ion-icon {
+    cursor: pointer;
+    font-size: 18px;
+  }
+`;
+const ActionContainer = styled.div`
+  position: absolute;
+  top: -46px;
+  right: 20px;
+  background-color: #3480eb;
+  border-radius: 2px;
+  padding: 4px;
+`;
+const ActionContent = styled.div`
+  color: white;
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  margin-top: 4px;
+  cursor: pointer;
+  span {
+    margin-left: 4px;
+  }
+  &:hover {
+    opacity: 0.7;
+  }
+`;
 const DragItem = styled.div`
   padding: 10px;
   border-radius: 6px;
@@ -31,12 +62,17 @@ const DragItem = styled.div`
   display: grid;
   grid-gap: 20px;
   flex-direction: column;
+  position: relative;
 `;
-
 const ListItem = ({ item, index }) => {
-  console.log(item);
+  const [openAction, setOpenAction] = useState(false);
+  const dispatch = useDispatch();
+  const handleDelete = () => {
+    dispatch(deleteTask(item));
+    setOpenAction(false);
+  };
   return (
-    <Draggable draggableId={item.id} index={index}>
+    <Draggable draggableId={item.task_ID?.toString()} index={index}>
       {(provided, snapshot) => {
         return (
           <DragItem
@@ -45,10 +81,35 @@ const ListItem = ({ item, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <CardFooter>
+            {openAction && (
+              <ActionContainer>
+                <ActionContent onClick={handleDelete}>
+                  <ion-icon name="trash-outline"></ion-icon>
+                  <span>Delete</span>
+                </ActionContent>
+                <ActionContent>
+                  <ion-icon name="hammer-outline"></ion-icon>{" "}
+                  <span>Update</span>
+                </ActionContent>
+              </ActionContainer>
+            )}
+            <CardHeader>
               <span>{item?.content}</span>
+              {!openAction ? (
+                <ion-icon
+                  name="menu-outline"
+                  onClick={() => setOpenAction(true)}
+                ></ion-icon>
+              ) : (
+                <ion-icon
+                  name="close-outline"
+                  onClick={() => setOpenAction(false)}
+                ></ion-icon>
+              )}
+            </CardHeader>
+            <CardFooter>
               <Author>
-                <Avatar src={`${item?.userImage}`} />
+                <Avatar src={`${item?.userImageCreator}`} />
               </Author>
             </CardFooter>
           </DragItem>

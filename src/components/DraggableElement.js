@@ -1,26 +1,32 @@
 import { Droppable } from "react-beautiful-dnd";
 import ListItem from "./ListItem";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { db, auth } from "../firebase";
+import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import { addTasksByProjectId } from "../redux/taskSlice";
+import { useDispatch } from "react-redux";
 function DraggableElement({ prefix, elements, id }) {
   const [user] = useAuthState(auth);
   const [openModal, setOpenModal] = useState(false);
   const [input, setInput] = useState("");
+  const dispatch = useDispatch();
   const handleOpenModal = () => {
     setOpenModal(!openModal);
   };
   const handleAddTask = () => {
-    db.collection("tasks").doc(id).collection(prefix).add({
+    const data = {
+      createdAt: new Date().toISOString(),
       content: input,
-      userEmail: user?.email,
-      userImage: user?.photoURL,
-      timestamp: new Date().toISOString(),
-    });
+      userEmailCreator: user?.email,
+      userImageCreator: user?.photoURL,
+      typeTask: prefix,
+      project_ID: id,
+    };
+    dispatch(addTasksByProjectId(data));
     setOpenModal(false);
   };
+  useEffect(() => {}, [dispatch]);
   return (
     <DroppableStyles>
       <ColumnHeader>
@@ -44,7 +50,7 @@ function DraggableElement({ prefix, elements, id }) {
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {elements?.map((item, index) => (
-              <ListItem key={item.id} item={item} index={index} />
+              <ListItem key={item?.task_ID} item={item} index={index} />
             ))}
             {provided.placeholder}
           </div>
