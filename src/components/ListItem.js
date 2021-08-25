@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { deleteTask } from "../redux/taskSlice";
 import { useDispatch } from "react-redux";
+import UpdateModal from "./UpdateModal";
 const Avatar = styled.img`
   height: 30px;
   width: 30px;
@@ -66,56 +67,65 @@ const DragItem = styled.div`
 `;
 const ListItem = ({ item, index }) => {
   const [openAction, setOpenAction] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const dispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteTask(item));
     setOpenAction(false);
   };
   return (
-    <Draggable draggableId={item.task_ID?.toString()} index={index}>
-      {(provided, snapshot) => {
-        return (
-          <DragItem
-            ref={provided.innerRef}
-            snapshot={snapshot}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            {openAction && (
-              <ActionContainer>
-                <ActionContent onClick={handleDelete}>
-                  <ion-icon name="trash-outline"></ion-icon>
-                  <span>Delete</span>
-                </ActionContent>
-                <ActionContent>
-                  <ion-icon name="hammer-outline"></ion-icon>{" "}
-                  <span>Update</span>
-                </ActionContent>
-              </ActionContainer>
-            )}
-            <CardHeader>
-              <span>{item?.content}</span>
-              {!openAction ? (
-                <ion-icon
-                  name="menu-outline"
-                  onClick={() => setOpenAction(true)}
-                ></ion-icon>
-              ) : (
-                <ion-icon
-                  name="close-outline"
-                  onClick={() => setOpenAction(false)}
-                ></ion-icon>
+    <div>
+      <UpdateModal
+        setOpenUpdateModal={setOpenUpdateModal}
+        openUpdateModal={openUpdateModal}
+        task={item}
+        type="task"
+      />
+      <Draggable draggableId={item.task_ID?.toString()} index={index}>
+        {(provided, snapshot) => {
+          return (
+            <DragItem
+              ref={provided.innerRef}
+              snapshot={snapshot}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              {openAction && (
+                <ActionContainer>
+                  <ActionContent onClick={handleDelete}>
+                    <ion-icon name="trash-outline"></ion-icon>
+                    <span>Delete</span>
+                  </ActionContent>
+                  <ActionContent onClick={() => setOpenUpdateModal(true)}>
+                    <ion-icon name="hammer-outline"></ion-icon>
+                    <span>Update</span>
+                  </ActionContent>
+                </ActionContainer>
               )}
-            </CardHeader>
-            <CardFooter>
-              <Author>
-                <Avatar src={`${item?.userImageCreator}`} />
-              </Author>
-            </CardFooter>
-          </DragItem>
-        );
-      }}
-    </Draggable>
+              <CardHeader>
+                <span>{item?.content}</span>
+                {!openAction ? (
+                  <ion-icon
+                    name="menu-outline"
+                    onClick={() => setOpenAction(true)}
+                  ></ion-icon>
+                ) : (
+                  <ion-icon
+                    name="close-outline"
+                    onClick={() => setOpenAction(false)}
+                  ></ion-icon>
+                )}
+              </CardHeader>
+              <CardFooter>
+                <Author>
+                  <Avatar src={`${item?.userImageCreator}`} />
+                </Author>
+              </CardFooter>
+            </DragItem>
+          );
+        }}
+      </Draggable>
+    </div>
   );
 };
 

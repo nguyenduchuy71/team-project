@@ -3,9 +3,11 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ValidModel from "./ValidModel";
 import { deleteProject } from "../redux/projectSlice";
+import UpdateModal from "./UpdateModal";
 function Project({ project, user }) {
   const [openValidModel, setOpenValidModel] = useState(false);
   const [openAction, setOpenAction] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const dispatch = useDispatch();
   const handleClick = () => {
     if (user) setOpenValidModel(true);
@@ -23,13 +25,19 @@ function Project({ project, user }) {
         setOpenValidModel={setOpenValidModel}
         project={project}
       />
+      <UpdateModal
+        setOpenUpdateModal={setOpenUpdateModal}
+        openUpdateModal={openUpdateModal}
+        project={project}
+        type="project"
+      />
       {openAction && (
         <MoreContent>
           <ActionContent onClick={handleDelete}>
             <ion-icon name="trash-outline"></ion-icon>
             <span>Delete</span>
           </ActionContent>
-          <ActionContent>
+          <ActionContent onClick={() => setOpenUpdateModal(true)}>
             <ion-icon name="hammer-outline"></ion-icon>
             <span>Edit</span>
           </ActionContent>

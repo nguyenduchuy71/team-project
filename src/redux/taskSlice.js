@@ -45,9 +45,8 @@ export const deleteTask = createAsyncThunk(
   `${KEY}/deleteTask`,
   async (task) => {
     try {
-      console.log(task);
       const rs = await axios.delete(
-        `/tasks/${task?.project_ID}/${task?.task_ID}`
+        `/tasks/${task.project_ID}/${task.task_ID}`
       );
       if (rs.status === 200) return task.task_ID;
     } catch (error) {

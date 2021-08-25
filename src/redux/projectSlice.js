@@ -26,6 +26,15 @@ export const addProject = createAsyncThunk(
     } else return NaN;
   }
 );
+export const updateProject = createAsyncThunk(
+  `${KEY}/updateProject`,
+  async (data) => {
+    const rs = await axios.put(`/projects/${data.project_ID}`, data);
+    if (rs.status === 200) {
+      return data;
+    } else return NaN;
+  }
+);
 export const deleteProject = createAsyncThunk(
   `${KEY}/deleteProject`,
   async (id) => {
@@ -78,6 +87,22 @@ const projectsSlice = createSlice({
       state.isLoading = false;
     },
     [addProject.rejected]: (state, action) => {
+      state.isLoading = false;
+    },
+    [updateProject.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [updateProject.fulfilled]: (state, action) => {
+      const data = action.payload;
+      if (data) {
+        const newProjects = state.projects.filter(
+          (project) => project.project_ID !== parseInt(data.project_ID)
+        );
+        state.projects = [...newProjects, data];
+      }
+      state.isLoading = false;
+    },
+    [updateProject.rejected]: (state, action) => {
       state.isLoading = false;
     },
     [deleteProject.pending]: (state, action) => {
