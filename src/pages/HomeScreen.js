@@ -11,15 +11,37 @@ function HomeScreen() {
   const dispatch = useDispatch();
   const [openModel, setOpenModel] = useState(false);
   const { isLoading, projects } = useSelector((state) => state.projects);
+  const [curentProjects, setCurentProjects] = useState(projects);
+  const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, [dispatch]);
   const handleOpenModel = () => {
     setOpenModel(!openModel);
   };
+  const handleInputChange = async (e) => {
+    setInput(e.target.value);
+    if (input.length > 1) {
+      const filterdProjects = await projects?.filter((project) => {
+        if (project?.projectName.toLowerCase().includes(input.toLowerCase()))
+          return true;
+        else return false;
+      });
+      setCurentProjects(filterdProjects);
+    }
+  };
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
   return (
     <HomeScreenContainer>
+      <SearchContent>
+        <input
+          type="text"
+          placeholder="Nhập nội dung cần tìm"
+          onChange={handleInputChange}
+          value={input}
+        />
+        <ion-icon name="search-outline"></ion-icon>
+      </SearchContent>
       <HomeScreenHead>
         <p>Projects</p>
         <HommeScreenHeadButton>
@@ -36,12 +58,26 @@ function HomeScreen() {
           )}
         </HommeScreenHeadButton>
       </HomeScreenHead>
-      {openModel && <Modal user={user} setOpenModel={setOpenModel} />}
+      {openModel && (
+        <Modal dispatch={dispatch} user={user} setOpenModel={setOpenModel} />
+      )}
       {!isLoading ? (
         <HommeScreenMain>
-          {projects?.map((project) => (
-            <Project key={project?.project_ID} project={project} user={user} />
-          ))}
+          {input.length > 1
+            ? curentProjects.map((project) => (
+                <Project
+                  key={project?.project_ID}
+                  project={project}
+                  user={user}
+                />
+              ))
+            : projects.map((project) => (
+                <Project
+                  key={project?.project_ID}
+                  project={project}
+                  user={user}
+                />
+              ))}
         </HommeScreenMain>
       ) : (
         <Loading />
@@ -53,7 +89,6 @@ function HomeScreen() {
 export default HomeScreen;
 const HomeScreenContainer = styled.div`
   width: 100%;
-  padding: 20px 10px;
 `;
 const HomeScreenHead = styled.div`
   display: flex;
@@ -61,6 +96,22 @@ const HomeScreenHead = styled.div`
   justify-content: space-between;
   p {
     font-size: 18px;
+  }
+`;
+const SearchContent = styled.div`
+  max-width: 260px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+  input {
+    width: 100%;
+    border: none;
+    padding: 4px;
+    outline: none;
   }
 `;
 const HommeScreenHeadButton = styled.button`
@@ -87,6 +138,6 @@ const HommeScreenHeadButton = styled.button`
 const HommeScreenMain = styled.div`
   padding: 20px 0;
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 30px;
   grid-template-columns: repeat(auto-fit, 280px);
 `;

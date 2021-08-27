@@ -21,10 +21,6 @@ function Header() {
           alt="logo"
         />
       </Link>
-      <SearchContent>
-        <input placeholder="Search" type="text" required />
-        <ion-icon name="search-outline"></ion-icon>
-      </SearchContent>
       <MenuContent>
         {user ? (
           <>
@@ -51,29 +47,6 @@ const ImgaeLogo = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-`;
-const SearchContent = styled.div`
-  display: flex;
-  align-items: stretch;
-  background-color: white;
-  border-radius: 4px;
-  padding: 4px;
-  input {
-    width: 400px;
-    outline: none;
-    border: none;
-    @media screen and (max-width: 767px) {
-      width: 200px;
-    }
-  }
-  ion-icon {
-    background-color: #3480eb;
-    border-radius: 50%;
-    padding: 4px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-  }
 `;
 const MenuContent = styled.div`
   display: flex;

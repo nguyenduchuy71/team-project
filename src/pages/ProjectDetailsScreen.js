@@ -48,12 +48,6 @@ function ProjectDetailsScreen(props) {
         </TaskBoardMain>
       </ProjectDetailsTaskBoardContent>
       <ProjectDetailsGroupChatContent>
-        <MemberGroup>
-          <p>Thành viên</p>
-          <ListMember>
-            <Member />
-          </ListMember>
-        </MemberGroup>
         <GroupChat>
           <p>Group Chat</p>
           <GroupChatContent id="chat">
@@ -109,16 +103,8 @@ const TaskBoarTime = styled.div`
     font-size: 16px;
   }
 `;
-const MemberGroup = styled.div`
-  width: 100%;
-  padding: 2px 8px;
-`;
-const ListMember = styled.div`
-  display: flex;
-  align-items: center;
-`;
 const GroupChat = styled.div`
-  padding: 8px;
+  padding: 0 8px;
   p {
     font-size: 18px;
     font-weight: bold;
