@@ -36,7 +36,7 @@ function HomeScreen() {
       <SearchContent>
         <input
           type="text"
-          placeholder="Nhập nội dung cần tìm"
+          placeholder="Search..."
           onChange={handleInputChange}
           value={input}
         />
@@ -89,6 +89,7 @@ function HomeScreen() {
 export default HomeScreen;
 const HomeScreenContainer = styled.div`
   width: 100%;
+  height: 100vh;
 `;
 const HomeScreenHead = styled.div`
   display: flex;
@@ -96,11 +97,12 @@ const HomeScreenHead = styled.div`
   justify-content: space-between;
   p {
     font-size: 18px;
+    font-weight: bold;
   }
 `;
 const SearchContent = styled.div`
   max-width: 260px;
-  margin: 10px auto;
+  margin: 20px auto;
   display: flex;
   align-items: center;
   justify-content: center;

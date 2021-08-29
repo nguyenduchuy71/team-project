@@ -33,26 +33,30 @@ function Modal({ dispatch, user, setOpenModel }) {
         <input
           name="projectName"
           type="text"
-          placeholder="Tên project"
+          placeholder="Project's Name"
           onChange={handleChange}
           required
         />
         <input
           name="projectPassword"
           type="password"
-          placeholder="Mật khẩu"
+          placeholder="Password"
           onChange={handleChange}
           required
         />
-        <button type="submit">Xác nhận</button>
+        <button type="submit">ADD</button>
       </FormContent>
     </ModelContent>
   );
 }
 const ModelContent = styled.div`
-  width: 100%;
+  width: max-content;
+  padding: 20px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 4px;
 `;
 const FormContent = styled.form`
   display: flex;
@@ -71,6 +75,7 @@ const FormContent = styled.form`
     border-radius: 4px;
     background-color: #3480eb;
     color: #fff;
+    cursor: pointer;
     &:hover {
       opacity: 0.8;
     }

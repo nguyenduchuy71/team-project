@@ -29,6 +29,7 @@ function Header() {
           </>
         ) : (
           <LoginContent onClick={signIn}>
+            <span>Login</span>
             <ion-icon name="log-in-outline"></ion-icon>
           </LoginContent>
         )}
@@ -37,9 +38,9 @@ function Header() {
   );
 }
 const HeaderContainer = styled.div`
-  padding: 10px 0;
-  background-color: #ccc;
+  padding: 4px 20px;
   display: flex;
+  border-bottom: 2px solid #ccc;
   align-items: center;
   justify-content: space-between;
 `;
@@ -68,10 +69,16 @@ const AvatarUser = styled.img`
 
 const LoginContent = styled.div`
   display: flex;
-  align-items: center;
-  padding: 4px;
-  background-color: #3480eb;
-  border-radius: 50%;
+  align-items: stretch;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: initial;
+  cursor: pointer;
+  transition: all 0.25s ease-in;
+  &:hover {
+    background-color: #3480eb;
+    color: #fff;
+  }
 `;
 
 export default Header;

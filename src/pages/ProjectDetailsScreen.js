@@ -7,7 +7,6 @@ import ChatInput from "../components/ChatInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjectById } from "../redux/projectSlice";
 import Message from "../components/Message";
-import Member from "../components/Member";
 import DragList from "../components/DragList";
 import { fetchMessages } from "../redux/chatSlice";
 import { fetchTasksByProjectId } from "../redux/taskSlice";
@@ -72,6 +71,7 @@ function ProjectDetailsScreen(props) {
 }
 
 const ProjectDetailsContainer = styled.div`
+  height: 100vh;
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
@@ -79,7 +79,6 @@ const ProjectDetailsContainer = styled.div`
 const ProjectDetailsTaskBoardContent = styled.div`
   flex: 2;
   width: 100%;
-  border-right: 1px solid #ccc;
 `;
 const ProjectDetailsGroupChatContent = styled.div`
   flex: 1;
@@ -105,6 +104,7 @@ const TaskBoarTime = styled.div`
 `;
 const GroupChat = styled.div`
   padding: 0 8px;
+  border-left: 1px solid #ccc;
   p {
     font-size: 18px;
     font-weight: bold;
