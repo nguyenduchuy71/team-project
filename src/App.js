@@ -7,7 +7,7 @@ import ProjectDetailsScreen from "./pages/ProjectDetailsScreen";
 import Footer from "./components/Footer";
 function App() {
   return (
-    <div>
+    <div className="wrapper">
       <Router>
         <Header />
         <div className="container">

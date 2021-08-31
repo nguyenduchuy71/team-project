@@ -2,7 +2,7 @@ body::-webkit-scrollbar {
   width: 8px;
 }
 body::-webkit-scrollbar-thumb {
-  background-color: #3480eb;
+  background-color: #ccc;
   outline: 1px solid slategrey;
 }
 .wrapper {

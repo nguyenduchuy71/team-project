@@ -34,13 +34,13 @@ function HomeScreen() {
   return (
     <HomeScreenContainer>
       <SearchContent>
+        <ion-icon name="search-outline"></ion-icon>
         <input
           type="text"
           placeholder="Search..."
           onChange={handleInputChange}
           value={input}
         />
-        <ion-icon name="search-outline"></ion-icon>
       </SearchContent>
       <HomeScreenHead>
         <p>Projects</p>
@@ -95,6 +95,7 @@ const HomeScreenHead = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
   p {
     font-size: 18px;
     font-weight: bold;
@@ -108,12 +109,15 @@ const SearchContent = styled.div`
   justify-content: center;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 4px;
+  padding: 8px 4px;
+  background-color: #fff;
   input {
     width: 100%;
+    height: 20px;
+    border-radius: 4px;
     border: none;
-    padding: 4px;
     outline: none;
+    margin-left: 2px;
   }
 `;
 const HommeScreenHeadButton = styled.button`
@@ -138,8 +142,8 @@ const HommeScreenHeadButton = styled.button`
   }
 `;
 const HommeScreenMain = styled.div`
-  padding: 20px 0;
+  padding: 20px 10px;
   display: grid;
-  grid-gap: 30px;
-  grid-template-columns: repeat(auto-fit, 280px);
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, auto));
 `;
