@@ -40,9 +40,9 @@ function Header() {
 const HeaderContainer = styled.div`
   padding: 4px 20px;
   display: flex;
-  border-bottom: 2px solid #ccc;
   align-items: center;
   justify-content: space-between;
+  background-color: #3480eb;
 `;
 const ImgaeLogo = styled.img`
   width: 60px;
@@ -51,12 +51,17 @@ const ImgaeLogo = styled.img`
 `;
 const MenuContent = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   ion-icon {
     width: 26px;
     height: 26px;
     margin-left: 2px;
     cursor: pointer;
+    color: #fff;
+    transition: all 0.25s ease-in;
+    &:hover {
+      opacity: 0.7;
+    }
   }
 `;
 const AvatarUser = styled.img`
@@ -74,10 +79,10 @@ const LoginContent = styled.div`
   border-radius: 4px;
   color: initial;
   cursor: pointer;
+  color: #fff;
   transition: all 0.25s ease-in;
   &:hover {
-    background-color: #3480eb;
-    color: #fff;
+    opacity: 0.7;
   }
 `;
 

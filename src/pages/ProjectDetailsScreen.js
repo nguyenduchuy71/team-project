@@ -31,7 +31,7 @@ function ProjectDetailsScreen(props) {
     chatRef?.current.scrollIntoView({
       behavior: "smooth",
     });
-  }, [dispatch]);
+  }, [dispatch, user]);
   return (
     <ProjectDetailsContainer>
       <ProjectDetailsTaskBoardContent>

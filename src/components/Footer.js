@@ -20,9 +20,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 6px 0;
-  border-top: 2px solid #ccc;
+  background-color: #3480eb;
+  color: #fff;
   a {
-    color: initial;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
   }
   img {
     width: 34px;
