@@ -89,7 +89,7 @@ function HomeScreen() {
 export default HomeScreen;
 const HomeScreenContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 `;
 const HomeScreenHead = styled.div`
   display: flex;

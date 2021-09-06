@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -71,10 +71,14 @@ function ProjectDetailsScreen(props) {
 }
 
 const ProjectDetailsContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin: 20px 0;
+  @media (max-width: 1025px) {
+    flex-direction: column;
+    padding: 0 10px;
+  }
 `;
 const ProjectDetailsTaskBoardContent = styled.div`
   flex: 2;
@@ -105,19 +109,24 @@ const TaskBoarTime = styled.div`
 const GroupChat = styled.div`
   padding: 0 8px;
   border-left: 1px solid #ccc;
+
   p {
     font-size: 18px;
     font-weight: bold;
   }
+  @media (max-width: 1025px) {
+    border-left: none;
+  }
 `;
 const GroupChatContent = styled.div`
-  width: 100%;
   padding: 0 8px;
   height: 340px;
-  margin: 0 auto;
   flex-grow: 1;
   overflow-y: scroll;
   border-radius: 4px;
+  @media (max-width: 1025px) {
+    border: 1px solid #ccc;
+  }
 `;
 const ListChat = styled.div`
   display: flex;
