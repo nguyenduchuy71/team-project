@@ -59,4 +59,4 @@ const ChatInputContainer = styled.div`
     display: none !important;
   }
 `;
-export default ChatInput;
+export default React.memo(ChatInput);

@@ -63,7 +63,7 @@ function ProjectDetailsScreen(props) {
               <ChatBottom ref={chatRef} />
             </ListChat>
           </GroupChatContent>
-          <ChatInput id={id} ref={chatRef} />
+          <ChatInput id={id} chatRef={chatRef} />
         </GroupChat>
       </ProjectDetailsGroupChatContent>
     </ProjectDetailsContainer>
@@ -109,7 +109,6 @@ const TaskBoarTime = styled.div`
 const GroupChat = styled.div`
   padding: 0 8px;
   border-left: 1px solid #ccc;
-
   p {
     font-size: 18px;
     font-weight: bold;
@@ -135,7 +134,7 @@ const ListChat = styled.div`
   margin-top: 10px;
 `;
 const ChatBottom = styled.div`
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 `;
 const TaskBoardMain = styled.div`
   margin-top: 20px;
