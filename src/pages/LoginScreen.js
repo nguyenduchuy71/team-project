@@ -1,36 +1,113 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import styled from "styled-components";
+import { userLogin, userSignUp } from "../redux/userSlice";
 function LoginScreen() {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [img, setImg] = useState("");
+  const history = useHistory();
   const [check, setCheck] = useState(true);
+  const { isLoading, isError, user } = useSelector((state) => state.user);
+  const singIn = (e) => {
+    e.preventDefault();
+    const user = {
+      username: username,
+      passwd: password,
+    };
+    dispatch(userLogin(user));
+  };
+  const singUp = (e) => {
+    e.preventDefault();
+    if (password === confirmPassword) {
+      const user = {
+        username: username,
+        passwd: password,
+        img: img,
+      };
+      dispatch(userSignUp(user));
+      if (!isError) {
+        alert("Tạo tài khoản thành công");
+        setCheck(true);
+        history.push("/login");
+      }
+    } else {
+      alert("Mật khẩu không khớp");
+    }
+  };
+  useEffect(() => {
+    if (user.img) {
+      history.push("/");
+    }
+  }, [isLoading, isError]);
   return (
     <Container>
       {check ? (
         <Content>
-          <label>Create Account</label>
-          <span>
-            Already have an account?{" "}
+          <label>Login Account</label>
+          <h4>
+            Don't have account?{" "}
             <a href="#" onClick={() => setCheck(false)}>
-              Sign in
+              Sign up
             </a>
-          </span>
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <input type="password" placeholder="Confirm Password" required />
-          <input type="text" placeholder="Url Avatar" required />
-          <button type="submit">Sign Up</button>
+          </h4>
+          <input
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" onClick={singIn}>
+            Sign In
+          </button>
+          {isError && <span>Tài khoản hoặc mật khẩu chưa đúng</span>}
         </Content>
       ) : (
         <Content>
-          <label>Login Account</label>
-          <span>
-            Don't have account?{" "}
+          <label>Create Account</label>
+          <h4>
+            Already have an account?{" "}
             <a href="#" onClick={() => setCheck(true)}>
-              Sign up
+              Sign in
             </a>
-          </span>
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Sign In</button>
+          </h4>
+          <input
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Url Avatar"
+            onChange={(e) => setImg(e.target.value)}
+            required
+          />
+          <button type="submit" onClick={singUp}>
+            Sign Up
+          </button>
+          {isError && <span>Tài khoản đã tồn tại</span>}
         </Content>
       )}
     </Container>
@@ -73,10 +150,14 @@ const Content = styled.form`
       border: 1px solid #3480eb;
     }
   }
+  span {
+    color: red;
+  }
   button {
     background-color: #3480eb;
     border: none;
     margin-top: 20px;
+    margin-bottom: 10px;
     padding: 10px;
     color: #fff;
     border-radius: 4px;
