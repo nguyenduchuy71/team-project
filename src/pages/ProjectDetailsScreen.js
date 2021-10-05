@@ -4,14 +4,14 @@ import { useHistory } from "react-router-dom";
 import ChatInput from "../components/ChatInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjectById } from "../redux/projectSlice";
+import { db } from "../firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../components/Message";
 import DragList from "../components/DragList";
 import { fetchMessages } from "../redux/chatSlice";
 import { fetchTasksByProjectId } from "../redux/taskSlice";
 import Loading from "../components/Loading";
 import ReactScrollableFeed from "react-scrollable-feed";
-import { db } from "../firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
 
 function ProjectDetailsScreen(props) {
   const id = props.match.params.id;
@@ -70,7 +70,8 @@ function ProjectDetailsScreen(props) {
                     />
                   );
                 })}
-                {/*                 {messages?.map((message) => (
+                {/*                 
+                {messages?.map((message) => (
                   <Message
                     key={message.message_ID}
                     message={message.message}

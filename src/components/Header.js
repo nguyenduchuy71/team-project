@@ -13,22 +13,19 @@ function Header() {
   return (
     <HeaderContainer>
       <Link to="/">
-        <ImgaeLogo
-          src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.6435-9/158164145_215338803672391_9072952637420078797_n.png?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vTOoIyHIveMAX_J_MLV&_nc_ht=scontent.fsgn8-2.fna&oh=a975c22fcd12bc952a14d4a94ee142da&oe=61405DC5"
-          alt="logo"
-        />
+        <ImgaeLogo src="./logo.png" alt="logo" loading="lazy" />
       </Link>
       <MenuContent>
         {user.img ? (
           <>
-            <AvatarUser src={user?.img} alt="avatar" />
+            <AvatarUser src={user?.img} alt="avatar" loading="lazy" />
             <ion-icon name="log-in-outline" onClick={signOut}></ion-icon>
           </>
         ) : (
           <LoginContent>
             <Link to="/login">
               <IconContent>
-                <img src="./enter.png" alt="icon" />
+                <img src="./enter.png" alt="icon" loading="lazy" />
               </IconContent>
             </Link>
           </LoginContent>
