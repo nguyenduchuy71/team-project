@@ -2,13 +2,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { userLogOut } from "../redux/userSlice";
+import { userLogOut, userChangeLanguage } from "../redux/userSlice";
 function Header() {
   const dispatch = useDispatch();
+  const { isLoading, user, language } = useSelector((state) => state.user);
   const signOut = () => {
     dispatch(userLogOut());
   };
-  const { isLoading, user } = useSelector((state) => state.user);
+  const changeLanguage = () => {
+    dispatch(userChangeLanguage(!language));
+  };
   useEffect(() => {}, [isLoading]);
   return (
     <HeaderContainer>
@@ -16,9 +19,17 @@ function Header() {
         <ImgaeLogo src="./logo.png" alt="logo" loading="lazy" />
       </Link>
       <MenuContent>
-        {user.img ? (
+        <Translate>
+          <ion-icon name="play-forward-circle-outline"></ion-icon>
+          <span onClick={changeLanguage}>{language ? "VN" : "EN"}</span>
+        </Translate>
+        {user.username ? (
           <>
-            <AvatarUser src={user?.img} alt="avatar" loading="lazy" />
+            <AvatarUser
+              src={user.img ? user.img : "./avatar-default.png"}
+              alt="avatar"
+              loading="lazy"
+            />
             <ion-icon name="log-in-outline" onClick={signOut}></ion-icon>
           </>
         ) : (
@@ -40,6 +51,25 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: #3480eb;
+`;
+const Translate = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  span {
+    padding: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    transition: all linear 0.25s;
+    &:hover {
+      background-color: #fff;
+      color: #111;
+    }
+  }
 `;
 const ImgaeLogo = styled.img`
   width: 60px;
