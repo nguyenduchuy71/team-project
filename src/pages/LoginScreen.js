@@ -18,7 +18,7 @@ function LoginScreen() {
   );
   const singIn = (e) => {
     e.preventDefault();
-    if (username.length == 0 || password.length == 0) {
+    if (username.length === 0 || password.length === 0) {
       alert("Vui lòng nhập đầy đủ thông tin");
     } else {
       const user = {
@@ -31,10 +31,10 @@ function LoginScreen() {
   const singUp = (e) => {
     e.preventDefault();
     if (
-      username.length == 0 ||
-      password.length == 0 ||
-      confirmPassword.length == 0 ||
-      img.length == 0
+      username.length === 0 ||
+      password.length === 0 ||
+      confirmPassword.length === 0 ||
+      img.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin");
     } else if (password === confirmPassword) {

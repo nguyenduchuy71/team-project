@@ -37,7 +37,12 @@ function Project({ project, user }) {
             <ion-icon name="trash-outline"></ion-icon>
             <span>Delete</span>
           </ActionContent>
-          <ActionContent onClick={() => setOpenUpdateModal(true)}>
+          <ActionContent
+            onClick={() => {
+              setOpenUpdateModal(true);
+              setOpenAction(false);
+            }}
+          >
             <ion-icon name="hammer-outline"></ion-icon>
             <span>Update</span>
           </ActionContent>
@@ -95,10 +100,11 @@ const MoreContent = styled.div`
   color: #fff;
   right: -10px;
   top: -70px;
-  z-index: 10;
-  background-color: #3480eb;
+  z-index: 5;
+  background: linear-gradient(135deg, #3480eb, #53b8bb);
   padding: 0 10px;
   border-radius: 4px;
+  border: 2px solid #53b8bb;
 `;
 const ActionContent = styled.div`
   display: flex;

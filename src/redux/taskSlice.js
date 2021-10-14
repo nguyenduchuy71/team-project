@@ -24,8 +24,9 @@ export const addTasksByProjectId = createAsyncThunk(
       const rs = await axios.post(`/tasks/${data.project_ID}`, data, {
         headers: { Authorization: Cookie.get("access_token") },
       });
-      if (rs.status === 200) {
-        if (rs.data?.length > 0) return rs.data[0];
+      console.log(rs);
+      if (rs.status === 201) {
+        return data;
       }
     } catch (error) {
       return error;
@@ -36,6 +37,7 @@ export const updateTaskId = createAsyncThunk(
   `${KEY}/updateTaskId`,
   async (task) => {
     try {
+      console.log(task);
       const rs = await axios.put(
         `/tasks/${task.project_ID}/${task.task_ID}`,
         task,
@@ -43,7 +45,7 @@ export const updateTaskId = createAsyncThunk(
           headers: { Authorization: Cookie.get("access_token") },
         }
       );
-      if (rs.status === 200) return task;
+      if (rs.status === 201) return task;
     } catch (error) {
       return error;
     }

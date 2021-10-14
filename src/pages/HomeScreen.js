@@ -8,12 +8,11 @@ import Loading from "../components/Loading";
 
 function HomeScreen() {
   const dispatch = useDispatch();
-  const [content, setContent] = useState(["đóng", "Dự án", "tìm kiếm"]);
   const [openModel, setOpenModel] = useState(false);
   const { isLoading, projects } = useSelector((state) => state.projects);
   const [curentProjects, setCurentProjects] = useState(projects);
   const [input, setInput] = useState("");
-  const { user, language } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const handleOpenModel = () => {
     setOpenModel(!openModel);
   };
@@ -112,6 +111,7 @@ const SearchContent = styled.div`
   border-radius: 4px;
   padding: 8px 4px;
   background-color: #fff;
+  transition: all linear 0.25s;
   input {
     width: 100%;
     height: 20px;
@@ -119,6 +119,9 @@ const SearchContent = styled.div`
     border: none;
     outline: none;
     margin-left: 2px;
+  }
+  &:hover {
+    border: 1px solid #3480eb;
   }
 `;
 const HommeScreenHeadButton = styled.button`

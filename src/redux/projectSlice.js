@@ -9,7 +9,7 @@ export const fetchProjects = createAsyncThunk(
   async () => {
     try {
       const project = await axios.get("/projects");
-      return project.data;
+      return project.data.results;
     } catch (error) {
       return error;
     }
@@ -32,6 +32,7 @@ export const addProject = createAsyncThunk(
   `${KEY}/addProject`,
   async (data) => {
     try {
+      console.log(data);
       const rs = await axios.post("/projects", data, {
         headers: { Authorization: Cookie.get("access_token") },
       });

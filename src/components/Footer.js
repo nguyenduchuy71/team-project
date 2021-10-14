@@ -7,7 +7,7 @@ function Footer() {
         Copyright 2021 @<a href="https://www.facebook.com/page.ailab">AILAB</a>
       </p>
       <img
-        src="./logo.png"
+        src="https://scontent.fsgn8-1.fna.fbcdn.net/v/t1.6435-9/158164145_215338803672391_9072952637420078797_n.png?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=fRndwXI0KI8AX_RQZZz&_nc_ht=scontent.fsgn8-1.fna&oh=455d09d27bc9420946c5e78460e571eb&oe=618F77C5"
         alt="logo"
         loading="lazy"
       />

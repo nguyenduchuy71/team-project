@@ -55,8 +55,9 @@ const ModelContent = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  border: 2px solid #ccc;
+  border: 1px solid #3480eb;
   border-radius: 4px;
+  transition: all linear 0.25s;
 `;
 const FormContent = styled.form`
   display: flex;
